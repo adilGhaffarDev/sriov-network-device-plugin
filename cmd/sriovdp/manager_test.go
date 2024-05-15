@@ -129,7 +129,7 @@ var _ = Describe("Resource manager", func() {
 				Expect(len(rm.configList)).To(Equal(2))
 			})
 		})
-		Context("when the multi-selector config reading is successful", func() {
+		Context("when multi-selector config reading is successful", func() {
 			var err error
 			BeforeEach(func() {
 				// add err handling
