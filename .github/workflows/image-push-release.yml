@@ -140,9 +140,11 @@ jobs:
     needs: [build-and-push-amd64-device-plugin,build-and-push-arm64-device-plugin,build-and-push-ppc64le-device-plugin]
     steps:
     - name: Set up Docker Buildx
+      if: ${{ github.repository_owner == env.image-push-owner }}
       uses: docker/setup-buildx-action@v2
 
     - name: Docker meta
+      if: ${{ github.repository_owner == env.image-push-owner }}
       id: docker_meta
       uses: docker/metadata-action@v4
       with:
@@ -153,6 +155,7 @@ jobs:
           type=ref,event=tag
 
     - name: Login to GitHub Container Registry
+      if: ${{ github.repository_owner == env.image-push-owner }}
       uses: docker/login-action@v2
       with:
         registry: ghcr.io
@@ -160,6 +163,7 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Create manifest for multi-arch images
+      if: ${{ github.repository_owner == env.image-push-owner }}
       run: |
         docker buildx imagetools create -t ${{ steps.docker_meta.outputs.tags }} \
         ${{ steps.docker_meta.outputs.tags }}-amd64 \
